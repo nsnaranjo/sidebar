@@ -121,10 +121,10 @@ export class SidebarComponent {
 
   isAnimating = false;
 
-  isExpanded = true;
+  isExpanded = false;
   isAlertsExpanded = false;
   isNotificationsExpanded = false;
-  isProfileExpanded = true
+  isProfileExpanded = false
 
   activeMenuOption: string | null = null
   currentMenuItems: MenuItem[] = [];
