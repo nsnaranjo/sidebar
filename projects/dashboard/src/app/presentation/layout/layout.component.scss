@@ -1,0 +1,36 @@
+@use "../../../styles.scss" as *;
+
+.layout-wrapper {
+  width: 100vw;
+  height: 100vh;
+  @include respond-to($size: medium){
+    display: flex;
+  }
+
+  &.sidebar-expanded {
+    .main--content {
+      @include respond-to($size: medium) {
+        margin-left: calc(8.5rem + 10rem); // Ajusta el ancho extra del contenedor rojo
+      }
+    }
+  }
+}
+
+.main--content {
+  width: auto;
+  background: map-get($map: $bgColors, $key: general-light );
+  padding: 1rem 2rem;
+  overflow-y: auto;
+  margin-top: 2rem;
+  @include respond-to($size: medium){
+    width: calc(100% - 8.5rem);
+    margin-left: 145px;
+    transition: margin-left 0.3s ease;
+  }
+}
+
+.floating-user-widget {
+  width: 95%;
+  @include flex($align: normal,$justify: normal, $position: row-reverse);
+  margin-bottom: 20px;
+}

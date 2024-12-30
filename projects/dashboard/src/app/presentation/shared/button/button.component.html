@@ -1,0 +1,34 @@
+@if (action !== 'file') {
+<button
+  [ngClass]="{
+    'btn__filled-light': styleButton === 'f-blue',
+    'btn__filled-dark': styleButton === 'f-blue-dark',
+    'btn__outline-blue': styleButton === 'o-blue',
+    'btn__outline-gray': styleButton === 'o-gray'
+  }"
+
+  [type]="action"
+  (click)="execFunc($event)"
+  [disabled]="disabled"
+>
+  <i class="{{ typeIcon }} btn__icon" *ngIf="typeIcon"></i>
+  {{ labelTitle }}
+</button>
+} @else {
+<section class="btn__file">
+  <input class="btn__file-input" [type]="action" accept="image/*" (change)="onFileSelected($event)" id="file" />
+  <label
+    for="file"
+    class="btn__file-label"
+    [ngClass]="{
+        'btn__filled-light': styleButton === 'f-blue',
+        'btn__filled-dark': styleButton === 'f-blue-dark',
+        'btn__outline-blue': styleButton === 'o-blue',
+      }"
+  >
+    <i class="{{ typeIcon }} btn__icon" *ngIf="typeIcon"></i>
+    {{ labelTitle }}
+  </label>
+</section>
+
+}

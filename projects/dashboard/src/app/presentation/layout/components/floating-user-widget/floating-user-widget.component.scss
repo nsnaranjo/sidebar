@@ -1,0 +1,241 @@
+@use '../../../../../styles.scss' as *;
+
+$blue: map-get(
+  $map: $bgColors,
+  $key: blue-general,
+);
+$blue-light: map-get(
+  $map: $bgColors,
+  $key: blue-support,
+);
+$terracotta: map-get(
+  $map: $bgColors,
+  $key: terracotta-support,
+);
+$green: map-get(
+  $map: $bgColors,
+  $key: green-support,
+);
+$light: map-get(
+  $map: $bgColors,
+  $key: general-light,
+);
+$gray: map-get(
+  $map: $bgColors,
+  $key: gray-general,
+);
+$gray-light: map-get(
+  $map: $bgColors,
+  $key: gray-general_light,
+);
+$gray-dark: map-get(
+  $map: $bgColors,
+  $key: gray-complement,
+);
+
+.floating {
+  display: none;
+  @include respond-to($size: medium) {
+    display: flex;
+  }
+}
+
+.island {
+  width: 200px;
+  height: 35px;
+  background-color: rgb(210 210 210 / 0.3);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border-radius: 50px;
+  padding: 5px 8px;
+  gap: 12px;
+  align-items: center;
+
+  @include respond-to($size: medium) {
+    width: 320px;
+    height: auto;
+  }
+
+  &__container {
+    width: 100%;
+    height: 100%;
+    @include flex($justify: space-between, $space: 12px);
+    z-index: 10;
+  }
+}
+
+.button__ia {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  background-color: $light;
+  border-radius: 9999px;
+  text-align: center;
+  border: 4px solid rgb(178 178 178 / 0.5);
+  cursor: pointer;
+
+  @include respond-to($size: medium) {
+    width: 52px;
+    height: 52px;
+  }
+
+  &-icon {
+    color: $gray;
+    font-size: $lg_2;
+    @include respond-to($size: medium) {
+      font-size: $xl_1;
+    }
+  }
+}
+
+.user-settings {
+  @include flex($justify: normal, $space: 12px);
+}
+
+.notifications {
+  position: relative;
+
+  &--alerts {
+    .notifications__button {
+      rotate: -25deg;
+    }
+  }
+
+  &__button {
+    height: 42px;
+    width: 42px;
+    background-color: transparent;
+    border-radius: 9999px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+
+    @include respond-to($size: medium) {
+      width: 52px;
+      height: 52px;
+    }
+
+    &--alerts {
+      rotate: -25deg;
+    }
+  }
+
+  &__icon {
+    color: $gray;
+    font-size: $lg_2;
+    @include respond-to($size: medium) {
+      font-size: $xl_1;
+    }
+  }
+
+  &__counter {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    top: 12px;
+    right: 8px;
+    background-color: $terracotta;
+    border-radius: 9999px;
+    @include respond-to($size: medium) {
+      top: 14px;
+      right: 5px;
+    }
+  }
+}
+
+.modal {
+  width: 430px;
+  max-width: 450px;
+  height: fit-content;
+  padding: 35px 20px;
+  border: 2px solid $gray-light;
+  border-radius: 15px 5px 15px 15px;
+  position: absolute;
+  top: 90px;
+  right: 70px;
+  background-color: $light;
+  box-shadow: 5px 8px 15px rgb(0 0 0 / 0.3);
+  @include flex($align: normal, $position: column, $space: 25px);
+  animation: fade-top 1s ease 0s 1 normal forwards;
+
+  &__data {
+    @include flex($justify: space-evenly);
+  }
+
+  &__info {
+    @include flex($align: flex-start, $position: column, $space: 10px);
+    &-name {
+      margin-bottom: 10px;
+      color: $gray-dark;
+      font-size: $md_2;
+    }
+    &-email {
+      color: $gray-dark;
+      font-size: $standar;
+    }
+    &-tel,
+    &-rol {
+      color: $gray-light;
+      font-size: $standar;
+    }
+    &-btn {
+      width: 100%;
+    }
+  }
+
+  &__advanced {
+    padding: 0 15px;
+    @include flex($align: normal, $position: column, $space: 40px);
+    animation: fade-center 1s ease 0s 1 normal forwards;
+
+    @keyframes fade-center {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    &-btn {
+      width: fit-content;
+      padding: 0;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: $gray-dark;
+      font-size: $standar;
+      cursor: pointer;
+      @include flex($justify: flex-start, $space: 15px);
+
+      &:hover {
+        color: $blue;
+      }
+    }
+
+    &-icon {
+      width: 25px;
+      height: 25px;
+      font-size: $lg_2;
+      text-align: center;
+
+      i {
+        width: inherit;
+        height: inherit;
+        display: block;
+      }
+    }
+  }
+}
+
+@keyframes fade-top {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

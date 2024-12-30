@@ -1,0 +1,19 @@
+<div class="avatar" [ngClass]="{ 'side-avatar': !isFloating, 'avatar-floating': isFloating, 'avatar-modal': isPhoto, 'avatar-preview': isPreview }">
+  <button class="avatar__button" (click)="toggleFunc()">
+    <ng-container *ngIf="urlPhoto; else letter">
+      <img class="avatar__button-image" [src]="urlPhoto" alt="Img del perfil del usuario" />
+    </ng-container>
+    <ng-template #letter>
+      {{ letter$ | async }}
+    </ng-template>
+  </button>
+
+  <button
+    *ngIf="isPhoto"
+    class="avatar-modal__photo"
+    [ngClass]="{ 'avatar-modal__photo-active': uploadPhoto }"
+    (click)="toggleUpload(); $event.stopPropagation()"
+  >
+    <i class="icon-charge"></i>
+  </button>
+</div>

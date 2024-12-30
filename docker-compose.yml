@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+
+  spad-dashboard:
+    image: us-central1-docker.pkg.dev/score-416214/spad-platform/spad-dashboard:latest
+    container_name: spad-dashboard
+    build:
+        context: .
+        dockerfile: ./Dockerfile
+    ports:
+      - '4203:80'
+    restart: unless-stopped

@@ -1,0 +1,557 @@
+@use '../../../../../styles.scss' as *;
+
+$borderRadius: 12px;
+$spacer: 1rem;
+$primary: #fff;
+$text: #6a778e;
+$linkHeight: $spacer * 3.5;
+$timing: 250ms;
+$transition: $timing ease all;
+
+$blue: map-get(
+  $map: $bgColors,
+  $key: blue-general,
+);
+$blue-light: map-get(
+  $map: $bgColors,
+  $key: blue-support,
+);
+$blue-dark: map-get(
+  $map: $bgColors,
+  $key: blue-king,
+);
+$green: map-get(
+  $map: $bgColors,
+  $key: green-support,
+);
+$dark: map-get(
+  $map: $bgColors,
+  $key: general-dark,
+);
+$light: map-get(
+  $map: $bgColors,
+  $key: general-light,
+);
+$gray: map-get(
+  $map: $bgColors,
+  $key: gray-general,
+);
+$gray-light: map-get(
+  $map: $bgColors,
+  $key: gray-general_light,
+);
+
+@mixin gooeyEffect($i) {
+  @keyframes gooeyEffect-#{$i} {
+    0% {
+      transform: scale(1, 1);
+    }
+    50% {
+      transform: scale(0.5, 1.5);
+    }
+    100% {
+      transform: scale(1, 1);
+    }
+  }
+}
+
+@keyframes float {
+  0% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+  }
+  50% {
+    box-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
+    transform: translatey(-20px);
+  }
+  100% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+  }
+}
+
+.navbar {
+  $ref: &;
+  position: fixed;
+  top: $spacer;
+  left: $spacer;
+  background: $blue;
+  border-radius: $borderRadius;
+  padding: $spacer 0;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1), 10px 0 10px rgba(0, 0, 0, 0.09);
+  height: calc(100vh - #{$spacer*4});
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-right: 3px solid #FFFFFF;
+  z-index: 200;
+
+  &__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: $linkHeight;
+    width: $spacer * 5.5;
+    color: $text;
+    transition: $transition;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+
+    &.active {
+      width: $linkHeight;
+      height: $linkHeight;
+      background: #FFFFFF;
+      border-radius: $borderRadius * 1.75;
+      margin-left: 1rem;
+
+      i {
+        color: $blue;
+      }
+
+      span {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      &:hover span {
+        opacity: 0;
+        transform: translate(-($spacer*3));
+      }
+    }
+
+    i {
+      color: #FFFFFF;
+      font-size: 24px;
+      transition: $transition;
+    }
+
+    // Tooltip
+    span {
+      position: absolute;
+      left: 100%;
+      transform: translate(-($spacer*3));
+      margin-left: 0.5rem;
+      opacity: 0;
+      pointer-events: none;
+      color: $primary;
+      background: $blue;
+      padding: $spacer * 0.75;
+      transition: $transition;
+      border-radius: $borderRadius;
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      width: auto;
+      z-index: 10;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(-100%, -50%);
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0.5rem 0.5rem 0.5rem 0;
+        border-color: transparent $blue transparent transparent;
+      }
+    }
+
+    &:hover {
+      color: #fff;
+
+      i {
+        color: $blue;
+      }
+    }
+
+    .navbar:not(:hover) &:focus,
+    &:hover {
+      span {
+        opacity: 1;
+        transform: translate(0);
+      }
+    }
+  }
+
+  &__menu {
+    position: relative;
+  }
+
+  &__item {
+    &:last-child {
+      &:before {
+        content: '';
+        position: absolute;
+        opacity: 0;
+        z-index: -1;
+        top: 0;
+        left: $spacer;
+        width: $linkHeight;
+        height: $linkHeight;
+        background: $primary;
+        border-radius: $borderRadius * 1.75;
+        transition: $timing cubic-bezier(1, 0.2, 0.1, 1.2) all;
+
+      }
+    }
+
+
+    @for $i from 1 to 12 {
+      &:first-child:nth-last-child(#{$i}),
+      &:first-child:nth-last-child(#{$i}) ~ li {
+        &:hover {
+          ~ li:last-child:before {
+            opacity: 1;
+          }
+        }
+
+        &:last-child:hover:before {
+          opacity: 1;
+        }
+
+        @for $j from 1 to $i {
+          &:nth-child(#{$j}):hover, {
+            ~ li:last-child:before {
+              @include gooeyEffect($j);
+              top: (100% / $i) * ($j - 1);
+              animation: gooeyEffect-#{$j} $timing 1;
+            }
+          }
+        }
+
+        &:last-child:hover:before, {
+          @include gooeyEffect($i);
+          top: (100% / $i) * ($i - 1);
+          animation: gooeyEffect-#{$i} $timing 1;
+        }
+      }
+    }
+  }
+
+  &__user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__avatar {
+    width: 50px;
+    height: 50px;
+    box-sizing: border-box;
+    border: 1px white solid;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+    animation: float 6s ease-in-out infinite;
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: cover
+    }
+
+    margin-top: 30px;
+    cursor: pointer;
+    position: relative;
+  }
+}
+
+.circular-menu {
+  position: absolute;
+  right: 97.3%;
+  top: 87%;
+  transform-origin: left center;
+  z-index: 300;
+
+  &__item {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    background-color: $blue;
+    padding: $spacer * 0.75;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-decoration: none;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+
+    i {
+      color: white;
+      font-size: 18px;
+    }
+
+    span {
+      position: absolute;
+      left: 207%;
+      transform: translate(-($spacer*3));
+      margin-left: 0.5rem;
+      opacity: 0;
+      pointer-events: none;
+      color: $primary;
+      background: $blue;
+      padding: $spacer * 0.75;
+      transition: $transition;
+      border-radius: $borderRadius;
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      width: auto;
+      z-index: 10;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(-100%, -50%);
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0.5rem 0.5rem 0.5rem 0;
+        border-color: transparent $blue transparent transparent;
+      }
+    }
+
+    &:hover span {
+      opacity: 1;
+    }
+
+    &:nth-child(1) {
+      transform: translate(60px, -60px);
+    }
+
+    &:nth-child(2) {
+      transform: translate(85px, 0);
+    }
+
+    &:nth-child(3) {
+      transform: translate(60px, 60px);
+    }
+  }
+
+}
+
+.expanded-box {
+  width: 320px;
+  background: $blue;
+  position: fixed;
+  left: 5.5rem;
+  transition: width 0.3s ease;
+  top: $spacer;
+  border-radius: $borderRadius;
+  padding: $spacer * 0.75;
+  box-shadow: 2px 1px 7px 1px #4694D1, 0 0 40px rgba(0, 0, 0, 0.03);
+  height: calc(100vh - 3.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 100;
+  transform-origin: left center;
+  will-change: transform, opacity;
+
+  &__profile {
+    width: 100%;
+    padding: $spacer;
+    display: flex;
+    align-items: center;
+    gap: $spacer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-left: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  &__avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__info {
+    flex-grow: 1;
+    color: $primary;
+  }
+
+  &__welcome {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  &__email, &__contact, &__role {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 5px;
+  }
+
+  &__collapse {
+    position: absolute;
+    right: -13px;
+    top: 17%;
+    padding: 5px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    box-shadow: 2px 0 7.6px 0 rgba(0, 0, 0, 0.25);
+  }
+
+  &.animating {
+    pointer-events: none; // Previene interacciones durante la animación
+  }
+}
+
+.menu-container {
+  width: 100%;
+  padding: 1rem;
+  margin-left: 3rem;
+
+  &.animating {
+    pointer-events: none;
+
+    .submenu-container {
+      transition: none !important;
+    }
+  }
+
+  .alert-options {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 1.5rem;
+    margin-top: 0.5rem;
+    align-items: center;
+
+    button {
+      background: transparent;
+      border: none;
+      color: #FFFFFF;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    span {
+      color: #FFFFFF;
+      font-size: 12px;
+    }
+  }
+}
+
+.menu-title {
+  color: white;
+  font-size: 16px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menu-item {
+  position: relative;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.menu-item-header {
+  padding: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+  width: 90%;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  span {
+    font-size: 14px;
+  }
+}
+
+.arrow {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+
+  &.expanded {
+    transform: rotate(-180deg);
+  }
+}
+
+.submenu-container {
+  position: relative;
+  margin-left: 1.5rem;
+  overflow: hidden;
+  transition: height 0.3s ease; // Para animar el cambio de altura del contenedor
+  visibility: hidden;
+
+  &.expanded {
+    visibility: visible;
+  }
+}
+
+.submenu-line {
+  position: absolute;
+  left: 0;
+  width: 2px;
+  background-color: white;
+  height: 100%;
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin: 0.25rem 0;
+  position: relative;
+  opacity: 0; // Comienza oculto
+  transform: translateY(-10px); // Posición inicial
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  span {
+    font-size: 12px;
+  }
+}
+

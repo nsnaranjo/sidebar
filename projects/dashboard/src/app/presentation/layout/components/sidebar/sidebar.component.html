@@ -1,0 +1,136 @@
+<nav class="navbar">
+  <div class="navbar__logo">
+    <img ngSrc="assets/logos/logo_spad.svg" alt="logo" height="50" width="50">
+  </div>
+
+  <ul class="navbar__menu">
+    <li class="navbar__item" *ngFor="let menuSection of menu">
+      <button class="navbar__link" (click)="toggleMenuItem(menuSection.mainOption)"
+              [class.active]="activeMenuOption === menuSection.mainOption">
+        <i [class]="menuSection.icon"></i>
+        <span>{{ menuSection.mainOption }}</span>
+      </button>
+    </li>
+  </ul>
+
+  <div></div>
+
+  <div class="navbar__user">
+    <ul class="navbar__menu">
+      <li class="navbar__item">
+        <button class="navbar__link" [class.active]="activeMenuOption === 'Alertas'" (click)="toggleAlerts()">
+          <i class="icon-alerts1"></i>
+          <span>Alertas</span>
+        </button>
+      </li>
+      <li class="navbar__item">
+        <button class="navbar__link" [class.active]="activeMenuOption === 'Notificaciones'" (click)="toggleNotifications()">
+          <i class="icon-notification1"></i>
+          <span>Notificaciones</span>
+        </button>
+      </li>
+    </ul>
+
+    <div class="navbar__avatar" (click)="toggleCircularMenu()">
+      <img ngSrc="https://s3-us-west-2.amazonaws.com/s.cdpn.io/751678/skytsunami.png" alt="logo" height="50" width="50">
+    </div>
+  </div>
+</nav>
+
+<div class="circular-menu" *ngIf="isCircularMenuOpen" [@circularAnimation]>
+  <a href="#" class="circular-menu__item">
+    <i class="icon-config"></i>
+    <span>Ajustes</span>
+  </a>
+
+  <a href="#" class="circular-menu__item">
+    <i class="icon-question1"></i>
+    <span>Soporte</span>
+  </a>
+
+  <a href="#" class="circular-menu__item" (click)="toggleProfile()">
+    <i class="icon-user-profile"></i>
+    <span>Perfil</span>
+  </a>
+</div>
+
+<div *ngIf="isExpanded" class="expanded-box" [@fadeInLeft] (@fadeInLeft.done)="isAnimating = false">
+  <div class="expanded-box__profile">
+    <div class="expanded-box__avatar">
+      <img ngSrc="https://s3-us-west-2.amazonaws.com/s.cdpn.io/751678/skytsunami.png" alt="Profile" height="50"
+           width="50">
+    </div>
+    <div class="expanded-box__info">
+      <p class="expanded-box__welcome">Bienvenido Juan Perez</p>
+      <p class="expanded-box__email">j.perez&commat;correo.com</p>
+      <p class="expanded-box__contact">Contacto: 601 123 4567</p>
+      <p class="expanded-box__role">Cargo: Administrativo</p>
+    </div>
+  </div>
+
+  <!-- Collapse menu-->
+  <button class="expanded-box__collapse" (click)="closeExpandedBox()">
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7.43591 2L3.36089 6.075C2.87964 6.55625 2.87964 7.34375 3.36089 7.825L7.43591 11.9"
+            stroke="#1D70B6" stroke-width="1.5" stroke-miterlimit="10"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!--  menu-->
+  <div class="menu-container" [class.animating]="isAnimating">
+    <h2 class="menu-title">{{ activeMenuOption }}</h2>
+
+    <div class="menu-items">
+      <ng-container *ngIf="!isAlertsExpanded && !isNotificationsExpanded && !isProfileExpanded">
+        <div *ngFor="let item of currentMenuItems; let i = index" class="menu-item">
+          <button class="menu-item-header" (click)="toggleSubmenu(i)" [class.active]="item.isExpanded" [disabled]="isAnimating">
+            <span>{{ item.label }}</span>
+
+            <span *ngIf="item.options" class="arrow" [class.expanded]="item.isExpanded">▼</span>
+          </button>
+
+          <div class="submenu-container" [@submenuAnimation]="item.isExpanded ? 'expanded' : 'collapsed'">
+            <div class="submenu-line"></div>
+
+            <div class="submenu-items">
+              <div *ngFor="let option of item.options; let j = index" class="submenu-item"
+                   [@optionAnimation]="{value: item.isExpanded ? 'show' : 'hide', params: { delay: j * 100 }}"
+              >
+                <span>{{ option }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="isAlertsExpanded">
+        <app-alerts [alerts]="alertsSection.notifications" (deleteAlert)="removeAlert($event)"></app-alerts>
+
+        <div class="alert-options">
+          <span>Tienes {{ alertsSection.notifications.length }} notificaciones</span>
+
+          <button  (click)="clearAllAlerts()" *ngIf="alertsSection.notifications.length > 0">
+            Eliminar todo
+          </button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="isNotificationsExpanded">
+        <app-notifications [notifications]="notificationsSection.notifications" (deleteNotification)="removeNotification($event)"></app-notifications>
+
+        <div class="alert-options">
+          <span>Tienes {{ notificationsSection.notifications.length }} notificaciones</span>
+
+          <button  (click)="clearAllNotifications()" *ngIf="notificationsSection.notifications.length > 0">
+            Eliminar todo
+          </button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="isProfileExpanded">
+        <app-photo-profile></app-photo-profile>
+      </ng-container>
+    </div>
+  </div>
+</div>

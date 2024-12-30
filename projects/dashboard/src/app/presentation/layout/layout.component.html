@@ -1,0 +1,9 @@
+<div class="layout-wrapper" [class.sidebar-expanded]="isSidebarExpanded">
+  <app-header></app-header>
+  <app-sidebar (toggleExpand)="handleSidebarToggle($event)"></app-sidebar>
+  <!-- Main Content -->
+  <div class="main--content">
+    <!-- Content -->
+    <router-outlet></router-outlet>
+  </div>
+</div>

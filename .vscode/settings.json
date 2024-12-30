@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "spad-sonarqube",
+        "projectKey": "spad-dashboard"
+    }
+}

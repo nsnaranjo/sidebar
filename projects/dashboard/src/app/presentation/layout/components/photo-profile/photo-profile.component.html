@@ -1,0 +1,26 @@
+<section class="upload">
+  <article class="upload__actions">
+    <section class="upload__actions-photo">
+      <ng-container *ngIf="previewPhoto || currentPhoto; else icon">
+        <img [src]="previewPhoto || currentPhoto" alt="Preview de la Img" />
+        <span class="upload__actions-photo-name" *ngIf="previewPhoto"> <p>{{photoName}}</p> </span>
+      </ng-container>
+      <ng-template #icon>
+        <app-avatar [isFloating]="true" [isPreview]="true" />
+      </ng-template>
+    </section>
+    <section class="upload__actions-btns">
+      <p>Formatos admitidos: JPG, PNG, BMP</p>
+      <ng-container *ngIf="previewPhoto && !savePhoto; else btn">
+        <app-button [labelTitle]="'Cargar nueva imagen'" [styleButton]="'f-blue-dark'" [action]="'file'" [typeIcon]="'icon-spinner11'" (onChange)="onUpload($event)" />
+        <app-button [labelTitle]="'Confirmar foto de perfil'" [typeIcon]="'icon-check'" (onClick)="onPhoto(); $event.stopPropagation()" />
+      </ng-container>
+      <ng-template #btn>
+        <app-button [labelTitle]="'Cargar imagen'" [action]="'file'" [styleButton]="'f-blue-dark'" [typeIcon]="'icon-display'" (onChange)="onUpload($event)" />
+        <app-button [labelTitle]="'Retirar imagen'" [styleButton]="true && 'f-blue-dark'" [disabled]="!currentPhoto" [typeIcon]="'icon-trash'" (onClick)="onClear()" />
+      </ng-template>
+    </section>
+  </article>
+</section>
+
+

@@ -1,0 +1,59 @@
+<div class="island" [ngClass]="{ 'floating': isFloating }">
+  <section class="island__container">
+    <button class="button__ia">
+      <i class="icon-IA_chat button__ia-icon"></i>
+    </button>
+
+    <div class="user-settings">
+      <article class="notifications notifications--alerts">
+        <button class="notifications__button">
+          <i class="icon-alerts1 notifications__icon"></i>
+        </button>
+        <div class="notifications__counter"></div>
+      </article>
+
+      <article class="notifications notifications--messages">
+        <button class="notifications__button">
+          <i class="icon-notification1 notifications__icon"></i>
+        </button>
+        <div class="notifications__counter"></div>
+      </article>
+      <app-avatar [isFloating]="true" (onClick)="toggleModal()" />
+    </div>
+  </section>
+</div>
+
+@if (isOpen) {
+<div class="modal" #modal>
+  <section class="modal__data">
+    <app-avatar [isFloating]="true" [isPhoto]="true" />
+    <article class="modal__info" *ngIf="user$ | async as user">
+      <h2 class="modal__info-name">{{ user.firstName }} {{ user.lastName }}</h2>
+      <p class="modal__info-email">{{ user.email }}</p>
+      <p class="modal__info-tel">Contacto: 601 000 000</p>
+      <p class="modal__info-rol">Cargo: Desarrollador</p>
+      <span class="modal__info-btn">
+        <app-button [styleButton]="'o-gray'" [labelTitle]="'Editar Perfil'" />
+      </span>
+    </article>
+  </section>
+  <ng-container *ngIf="isProfile; else modalContent">
+    <app-photo-profile />
+  </ng-container>
+  <ng-template #modalContent>
+    <section class="modal__advanced">
+      <button
+        class="modal__advanced-btn"
+        *ngFor="let menuItem of menuSettings; let i = index"
+        (click)="handleMenuClick(i)"
+      >
+        <span class="modal__advanced-icon">
+          <i [class]="menuItem.icon"></i>
+        </span>
+
+        <span class="modal__advanced-name">{{ menuItem.title }}</span>
+      </button>
+    </section>
+  </ng-template>
+</div>
+}

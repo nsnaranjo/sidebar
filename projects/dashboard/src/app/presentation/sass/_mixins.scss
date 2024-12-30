@@ -1,0 +1,89 @@
+@use 'colors' as col;
+@use 'variables' as var;
+
+$light: map-get($map: col.$bgColors, $key: general-light);
+$gray: map-get($map: col.$bgColors, $key: gray-general);
+
+// Font Weight
+@mixin font-weight($weight: regular) {
+  @if $weight == semibold {
+    font-family: PoppinsSemibold, sans-serif;
+    font-style: normal;
+    font-weight: 600; /* semibold */
+  } @else if $weight == bold {
+    font-family: PoppinsBold, sans-serif;
+    font-style: normal;
+    font-weight: 700; /* bold */
+  } @else {
+    font-family: PoppinsRegular, sans-serif;
+    font-weight: 400; /* custom */
+  }
+}
+// Button standar
+@mixin button-style(
+  $py: 8px,
+  $px: 30px,
+  $rounded: 9999px,
+  $bg: blue-general,
+  $hover: blue-emphasis,
+  $color: general-light,
+  $size: var.$xs_2
+) {
+  width: 100%;
+  height: 41px;
+  padding: $py $px;
+  @include flex($space: 10px);
+  background-color: map-get($map: col.$bgColors, $key: $bg);
+  color: map-get($map: col.$bgColors, $key: $color);
+  font-size: $size;
+  @include font-weight($weight: semibold);
+  border-radius: $rounded;
+  border: none;
+  @if $bg == ghost {
+    border: 2px solid map-get($map: col.$bgColors, $key: $color);
+  }
+  transition: background-color .2s ease;
+  cursor: pointer;
+
+  &:disabled {
+    background-color: $gray;
+    color: $light;
+    cursor: not-allowed;
+  }
+}
+
+// Display Flex
+@mixin flex($justify: center, $align: center, $space: 0, $position: row, $wrap: nowrap, $order: 0) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $space;
+  flex-direction: $position;
+  flex-wrap: $wrap;
+  order: $order;
+}
+
+// Responsive mixin
+@mixin respond-to($size) {
+  @if $size == small {
+    @media (min-width: var.$sm) {
+      @content;
+    }
+  } @else if $size == medium {
+    @media (min-width: var.$md) {
+      @content;
+    }
+  } @else if $size == large {
+    @media (min-width: var.$lg) {
+      @content;
+    }
+  } @else if $size == xlarge {
+    @media (min-width: var.$xl) {
+      @content;
+    }
+  } @else if $size == xxlarge {
+    @media (min-width: var.$xxl) {
+      @content;
+    }
+  }
+}

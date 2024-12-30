@@ -1,0 +1,114 @@
+@use '../../../../../styles.scss' as *;
+
+$blue: map-get(
+  $map: $bgColors,
+  $key: blue-general,
+);
+$gray: map-get(
+  $map: $bgColors,
+  $key: gray-general,
+);
+$gray-light: map-get(
+  $map: $bgColors,
+  $key: gray-general_light,
+);
+$gray-dark: map-get(
+  $map: $bgColors,
+  $key: gray-complement,
+);
+
+.upload {
+  padding: 0 15px;
+  height: 155px;
+  @include flex($align: normal, $position: column, $space: 18px);
+  animation: fade-center 1s ease 0s 1 normal forwards;
+
+  @keyframes fade-center {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  &__back {
+    @include flex($justify: flex-start, $space: 15px);
+    color: $gray-dark;
+    font-size: $lg_1;
+    button {
+      width: 25px;
+      height: 25px;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      i {
+        width: inherit;
+        height: inherit;
+        font-size: $lg_2;
+        color: $gray;
+        transition: all 0.3s ease;
+        &:hover {
+          color: $blue;
+        }
+      }
+    }
+  }
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 2.5rem;
+    &-photo {
+      width: 40px;
+      height: 40px;
+      background-color: $gray;
+      border-radius: 9999px;
+      position: relative;
+      @include flex();
+      &-name {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 9999px;
+        background: linear-gradient(rgba(181, 180, 180, 0.5) 70%, rgb(255 255 255 / .8) 30%);
+        p{
+          position: absolute;
+          top: 80%;
+          left: 50%;
+          transform: translate(-50%);
+          font-size: $xs_1;
+          color: $gray-dark;
+          text-align: center;
+        }
+      }
+      img {
+        border-radius: 9999px;
+        width: inherit;
+        height: inherit;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+      }
+      i {
+        font-size: $xl_2;
+        color: $light;
+      }
+    }
+    &-btns {
+      width: 250px;
+      text-align: center;
+      @include flex($align: normal, $position: column, $space: 15px);
+      p {
+        font-size: $xs_2;
+        color: $blue;
+      }
+    }
+  }
+}
+

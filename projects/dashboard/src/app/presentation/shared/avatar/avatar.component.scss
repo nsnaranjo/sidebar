@@ -1,0 +1,138 @@
+@use '../../../../styles.scss' as *;
+
+$blue: map-get(
+  $map: $bgColors,
+  $key: blue-general,
+);
+$blue-light: map-get(
+  $map: $bgColors,
+  $key: blue-support,
+);
+$green: map-get(
+  $map: $bgColors,
+  $key: green-support,
+);
+$light: map-get(
+  $map: $bgColors,
+  $key: general-light,
+);
+$gray-light: map-get(
+  $map: $bgColors,
+  $key: gray-general_light,
+);
+$gray-dark: map-get(
+  $map: $bgColors,
+  $key: gray-complement,
+);
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  position: relative;
+  @include respond-to($size: medium) {
+    width: 52px;
+    height: 52px;
+  }
+
+  &__button {
+    width: inherit;
+    height: inherit;
+    padding: 0;
+    background-color: $blue-light;
+    border-radius: 9999px;
+    text-align: center;
+    border: none;
+    font-size: $lg_1;
+    color: $light;
+    @include font-weight($weight: bold);
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 2px 4px 8px rgb(0 0 0 / 0.3);
+
+    @include respond-to($size: medium) {
+      font-size: $xl_2;
+    }
+
+    &-image {
+      border-radius: 9999px;
+      width: inherit;
+      height: inherit;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+      @include respond-to($size: medium) {
+        max-height: 52px;
+      }
+    }
+
+  }
+}
+
+.side-avatar {
+  display: block;
+  @include respond-to($size: medium) {
+    display: none;
+  }
+}
+
+.avatar-floating {
+  display: none;
+  @include respond-to($size: medium) {
+    display: block;
+  }
+}
+
+.avatar-modal {
+  width: 100px;
+  height: 100px;
+  .avatar__button {
+    width: inherit;
+    height: inherit;
+    font-size: $xxl_2;
+    cursor: default;
+  }
+  .avatar__button-image {
+    border-radius: 9999px;
+    width: inherit;
+    height: inherit;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+  &__photo {
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+    width: 25px;
+    height: 25px;
+    background-color: $gray-light;
+    border: none;
+    outline: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    @include flex();
+    transition: background-color 0.2s ease;
+    i {
+      font-size: 15px;
+      color: $light;
+    }
+    &:hover {
+      background-color: $blue;
+      transform: scale(1.1);
+    }
+  }
+
+  &__photo-active {
+    background-color: $blue;
+  }
+}
+
+
+.avatar-preview{
+  width: 80px;
+  height: 80px;
+  .avatar__button {
+    font-size: $xxl_2;
+    cursor: default;
+  }
+}
